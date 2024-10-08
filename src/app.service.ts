@@ -8,7 +8,7 @@ export class AppService {
 
   handleFileUpload(file: Express.MulterS3File, email: string) {
     // Handle the uploaded file information and email
-    console.log(JSON.stringify(file));
+    console.log(`file: ${file}`);
     console.log(`File uploaded to S3: ${file.location}`);
     console.log(`Email: ${email}`);
     // Return file details and email confirmation
