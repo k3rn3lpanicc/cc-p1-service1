@@ -13,7 +13,7 @@ export class MessageService {
         `Message published to exchange ccp1 with routing key request_submitted`,
       );
     } catch (error) {
-      console.error('Error publishing message:', error);
+      console.error(`Error publishing message ${error}`);
       throw error;
     }
   }
