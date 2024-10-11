@@ -26,6 +26,6 @@ export class MessageService implements OnModuleInit {
   }
 
   sendMessage(message: any) {
-    return this.client.emit('message_printed', message);
+    return this.client.emit('request_submitted', message);
   }
 }
