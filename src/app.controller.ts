@@ -9,12 +9,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { promises as fs } from 'fs';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   private readonly s3: S3Client;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly appService: AppService,
+  ) {
     this.s3 = new S3Client({
       endpoint: this.configService.get<string>('LIARA_ENDPOINT'),
       credentials: {
@@ -28,32 +32,38 @@ export class AppController {
   @Post('service')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file, @Body('email') email) {
-    console.log({ file });
-    console.log({ email });
-    // const fileContent = await fs.readFile(file.buffer);
-
+    const fileName = `${Date.now()}-${file.originalname}`;
+    file.originalname = fileName;
     const uploadParams = {
       Bucket: this.configService.get<string>('LIARA_BUCKET_NAME'),
       Key: file.originalname,
       Body: file.buffer,
       ContentType: file.mimetype,
     };
-
     try {
       await this.s3.send(new PutObjectCommand(uploadParams));
-      await fs.unlink(file.path); // Remove file after upload
-
+      const imageUrl = `https://cc-p1.storage.c2.liara.space/${fileName}`;
+      const { _id, state } = await this.appService.handleUserRequest(
+        email,
+        imageUrl,
+      );
       return {
         status: 'success',
         message: 'File uploaded!',
-        url: {
-          name: file.originalname,
-          type: file.mimetype,
+        result: {
+          url: imageUrl,
+          requestId: _id,
+          state: state,
         },
       };
     } catch (error) {
       console.error('Error uploading file:', error);
       throw error;
     }
+  }
+
+  @Post('/state')
+  async getStateOfRequest(@Body('id') requestId: string) {
+    return await this.appService.getRequestStatus(requestId);
   }
 }
