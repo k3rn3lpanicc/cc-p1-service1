@@ -17,7 +17,7 @@ export class MessageService implements OnModuleInit {
         urls: [process.env.RMQURL],
         queue: 'main_queue',
         queueOptions: {
-          durable: true,
+          durable: false,
           autoDelete: false,
         },
         persistent: true,

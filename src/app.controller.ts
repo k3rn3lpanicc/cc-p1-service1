@@ -10,7 +10,6 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
 import { MessageService } from './message.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
@@ -71,11 +70,5 @@ export class AppController {
   @Post('/state')
   async getStateOfRequest(@Body('id') requestId: string) {
     return await this.appService.getRequestStatus(requestId);
-  }
-
-  // Handle incoming messages
-  @MessagePattern('request_submitted')
-  handleMessagePrinted(@Payload() data: any) {
-    console.log('Received message:', data);
   }
 }
