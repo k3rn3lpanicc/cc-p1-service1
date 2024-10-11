@@ -23,6 +23,7 @@ export class AppService {
       imageUrl,
       resultUrl: '',
       state: STATE.CREATED,
+      imageCaption: '',
     };
     const createdRecord = new this.recordModel(record);
     return createdRecord.save();
@@ -35,6 +36,7 @@ export class AppService {
         url: req.imageUrl,
         requestId: req._id,
         state: req.state,
+        caption: req.imageCaption,
       },
     };
   }

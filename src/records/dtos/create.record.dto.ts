@@ -16,4 +16,8 @@ export class CreateRecordDto {
   @IsOptional()
   @IsString()
   readonly resultUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  readonly imageCaption?: string;
 }

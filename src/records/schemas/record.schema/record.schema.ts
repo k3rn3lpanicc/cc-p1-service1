@@ -16,6 +16,9 @@ export class Record {
 
   @Prop()
   resultUrl: string;
+
+  @Prop()
+  imageCaption: string;
 }
 
 export const RecordSchema = SchemaFactory.createForClass(Record);
