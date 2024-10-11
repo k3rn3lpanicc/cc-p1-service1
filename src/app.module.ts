@@ -8,7 +8,9 @@ import {
   RecordSchema,
 } from './records/schemas/record.schema/record.schema';
 import { MessageService } from './message.service';
-
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { configDotenv } from 'dotenv';
+configDotenv();
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -22,6 +24,16 @@ import { MessageService } from './message.service';
       }),
     }),
     MongooseModule.forFeature([{ name: Record.name, schema: RecordSchema }]),
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      uri: process.env.RMQURL,
+      exchanges: [
+        {
+          name: 'ccp1',
+          type: 'topic',
+        },
+      ],
+      enableControllerDiscovery: true,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService, Record, MessageService],

@@ -1,31 +1,20 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  Transport,
-} from '@nestjs/microservices';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class MessageService implements OnModuleInit {
-  private client: ClientProxy;
+export class MessageService {
+  constructor(private readonly amqpConnection: AmqpConnection) {}
 
-  onModuleInit() {
-    this.client = ClientProxyFactory.create({
-      transport: Transport.RMQ,
-      options: {
-        urls: [process.env.RMQURL],
-        queue: 'main_queue',
-        queueOptions: {
-          durable: false,
-          autoDelete: false,
-        },
-        persistent: true,
-      },
-    });
-  }
-
-  sendMessage(message: any) {
-    return this.client.emit('request_submitted', message);
+  async sendMessage(message: any) {
+    try {
+      await this.amqpConnection.publish('ccp1', 'request_submitted', message);
+      console.log(
+        `Message published to exchange ccp1 with routing key request_submitted`,
+      );
+    } catch (error) {
+      console.error('Error publishing message:', error);
+      throw error;
+    }
   }
 }
