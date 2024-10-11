@@ -48,7 +48,7 @@ export class AppController {
         email,
         imageUrl,
       );
-      this.messageService.sendMessage({
+      await this.messageService.sendMessage({
         id: _id,
         imageURL: imageUrl,
       });
