@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { AppService } from './app.service';
+import { MessageService } from './message.service';
 
 @Controller()
 export class AppController {
@@ -17,6 +18,7 @@ export class AppController {
   constructor(
     private readonly configService: ConfigService,
     private readonly appService: AppService,
+    private readonly messageService: MessageService,
   ) {
     this.s3 = new S3Client({
       endpoint: this.configService.get<string>('LIARA_ENDPOINT'),
@@ -46,6 +48,10 @@ export class AppController {
         email,
         imageUrl,
       );
+      this.messageService.sendMessage({
+        id: _id,
+        imageURL: imageUrl,
+      });
       return {
         status: 'success',
         message: 'File uploaded!',

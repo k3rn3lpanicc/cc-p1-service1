@@ -7,6 +7,7 @@ import {
   Record,
   RecordSchema,
 } from './records/schemas/record.schema/record.schema';
+import { MessageService } from './message.service';
 
 @Module({
   imports: [
@@ -23,6 +24,6 @@ import {
     MongooseModule.forFeature([{ name: Record.name, schema: RecordSchema }]),
   ],
   controllers: [AppController],
-  providers: [AppService, Record],
+  providers: [AppService, Record, MessageService],
 })
 export class AppModule {}
