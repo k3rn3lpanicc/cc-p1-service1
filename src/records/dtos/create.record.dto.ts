@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
-import { STATE } from '../enums/state.enum';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class CreateRecordDto {
   @IsEmail()
@@ -11,8 +10,8 @@ export class CreateRecordDto {
   readonly imageUrl?: string;
 
   @IsOptional()
-  @IsEnum(STATE)
-  readonly state?: STATE;
+  @IsString()
+  readonly state?: string;
 
   @IsOptional()
   @IsString()

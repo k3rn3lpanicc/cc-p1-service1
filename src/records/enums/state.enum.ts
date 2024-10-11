@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-export enum STATE {
-  CREATED,
-  PENDING,
-  FAILED,
-  DONE,
-  SENT,
-}
+export const STATE = {
+  CREATED: 'CREATED',
+  PENDING: 'PENDING',
+  FAILED: 'FAILED',
+  DONE: 'DONE',
+  SENT: 'SENT',
+};
