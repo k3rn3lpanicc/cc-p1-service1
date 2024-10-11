@@ -8,7 +8,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
-import { promises as fs } from 'fs';
 import { AppService } from './app.service';
 
 @Controller()
