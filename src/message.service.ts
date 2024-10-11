@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import {
   ClientProxy,
@@ -13,10 +14,11 @@ export class MessageService implements OnModuleInit {
     this.client = ClientProxyFactory.create({
       transport: Transport.RMQ,
       options: {
-        urls: ['amqps://<username>:<password>@<host>/<vhost>'],
+        urls: [process.env.RMQURL],
         queue: 'main_queue',
         queueOptions: {
-          durable: false,
+          durable: true,
+          autoDelete: false,
         },
       },
     });
