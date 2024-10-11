@@ -20,6 +20,7 @@ export class MessageService implements OnModuleInit {
           durable: true,
           autoDelete: false,
         },
+        persistent: true,
       },
     });
   }
