@@ -37,7 +37,7 @@ export class AppService {
         requestId: req._id,
         state: req.state,
         caption: req.imageCaption,
-        result: req.imageCaption,
+        result: req.resultUrl,
       },
     };
   }
